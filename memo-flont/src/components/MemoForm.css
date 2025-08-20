@@ -1,0 +1,72 @@
+/* MemoForm.css */
+
+.memo-form {
+  display: flex; /* Flexbox レイアウトを使用 */
+  flex-direction: column; /* 要素を縦に並べる */
+  max-width: 400px; /* フォームの最大幅 */
+  margin: 20px auto; /* 上下のマージンを20px、左右を中央揃え */
+  padding: 20px; /* 内側の余白 */
+  border: 1px solid #ccc; /* 枠線 */
+  border-radius: 5px; /* 角丸 */
+  background-color: #f9f9f9; /* 背景色 */
+}
+
+/* ラベルのスタイル */
+.memo-form label {
+  margin-top: 10px; /* 上のマージン */
+  font-weight: bold; /* 太字 */
+}
+
+/* テキスト入力欄、テキストエリアのスタイル */
+.memo-form input[type="text"],
+.memo-form textarea {
+  padding: 8px; /* 内側の余白 */
+  margin-top: 5px; /* 上のマージン */
+  margin-bottom: 10px; /* 下のマージン */
+  border: 1px solid #ddd; /* 枠線 */
+  border-radius: 4px; /* 角丸 */
+  box-sizing: border-box; /* padding, border を含めて要素の幅を計算 */
+  width: 100%; /* 親要素いっぱいに広げる */
+}
+
+/* テキストエリアのスタイル */
+.memo-form textarea {
+  height: 100px; /* 高さ */
+  resize: vertical; /* 縦方向のリサイズを許可 */
+}
+
+/* 背景色選択のスタイルの調整 */
+.memo-form input[type="color"] {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 50px; /* 色選択の幅 */
+  height: 30px; /* 高さ */
+  border: none; /* 枠線を消す */
+  padding: 0;
+  background-color: white; /* 背景色を白に設定 */
+}
+
+/* ボタンのスタイル */
+.memo-form button {
+  background-color: #007bff; /* 背景色 (青) */
+  color: white; /* 文字色 (白) */
+  padding: 10px 15px; /* 内側の余白 */
+  border: none; /* 枠線を消す */
+  border-radius: 4px; /* 角丸 */
+  cursor: pointer; /* カーソルを指の形にする */
+  font-size: 16px; /* 文字サイズ */
+}
+
+/* ボタンにマウスカーソルが乗った時のスタイル */
+.memo-form button:hover {
+  background-color: #0056b3; /* 背景色 (少し濃い青) */
+}
+
+/* キャンセルボタンのスタイル */
+.memo-form button[type="button"] { /* type="button" を指定 */
+  background-color: #6c757d; /* グレー */
+}
+
+.memo-form button[type="button"]:hover {
+  background-color: #5a6268;
+}

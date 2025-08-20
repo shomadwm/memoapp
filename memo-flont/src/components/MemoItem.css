@@ -1,0 +1,98 @@
+/* MemoItem.css */
+
+.memo-item {
+  background-color: #ffffff; /* メモカードのデフォルト背景色 (JSXで上書きされます) */
+  border: 1px solid #e0e0e0; /* 枠線 */
+  border-radius: 8px; /* 角丸 */
+  padding: 15px; /* 内側の余白 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 軽い影 */
+  transition: transform 0.2s ease-in-out; /* ホバー時のアニメーション */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 内容とアクションボタンを上下に配置 */
+}
+
+/* ホバー時のスタイル */
+.memo-item:hover {
+  transform: translateY(-5px); /* 少し上に浮き上がる */
+}
+
+/* メモのタイトル */
+.memo-item h3 {
+  margin-top: 0; /* 上部のマージンをリセット */
+  margin-bottom: 10px; /* 下部のマージン */
+  color: #333; /* 文字色 */
+  font-size: 1.2em; /* 文字サイズ */
+}
+
+/* メモの内容 */
+.memo-item p {
+  color: #555; /* 文字色 */
+  line-height: 1.5; /* 行の高さ */
+  margin-bottom: 15px; /* 下部のマージン */
+  flex-grow: 1; /* 内容が領域を埋めるようにする */
+  word-wrap: break-word; /* 長い単語を折り返す */
+}
+
+/* 作成日時 */
+.memo-item .memo-date {
+  font-size: 0.85em; /* 文字サイズ */
+  color: #888; /* 文字色 */
+  text-align: right; /* 右揃え */
+  margin-top: 10px; /* 上部のマージン */
+  margin-bottom: 15px;
+}
+
+/* アクションボタンと色選択コンテナ */
+.memo-item .memo-actions {
+  display: flex; /* Flexbox レイアウトを使用 */
+  justify-content: space-between; /* 左右に要素を配置 */
+  align-items: center; /* 垂直方向中央揃え */
+  margin-top: 10px; /* 上部のマージン */
+}
+
+/* ボタンのスタイル */
+.memo-item .memo-actions button {
+  background-color: #007bff; /* 青 */
+  color: white; /* 白 */
+  border: none; /* 枠線なし */
+  padding: 8px 12px; /* 内側の余白 */
+  border-radius: 4px; /* 角丸 */
+  cursor: pointer; /* カーソルを指の形に */
+  font-size: 0.9em; /* 文字サイズ */
+  transition: background-color 0.2s ease; /* ホバー時のアニメーション */
+}
+
+/* ボタンにマウスカーソルが乗った時のスタイル */
+.memo-item .memo-actions button:hover {
+  background-color: #0056b3; /* 少し濃い青 */
+}
+
+/* 削除ボタンのスタイル */
+.memo-item .memo-actions button:last-of-type {
+  background-color: #dc3545; /* 赤 */
+  margin-left: 10px; /* 左側に少しマージン */
+}
+
+.memo-item .memo-actions button:last-of-type:hover {
+  background-color: #c82333; /* 少し濃い赤 */
+}
+
+/* 背景色選択のラベルと入力欄 */
+.memo-item .memo-actions label {
+  display: flex; /* ラベルと入力欄を横並びにする */
+  align-items: center; /* 垂直方向中央揃え */
+  font-size: 0.9em; /* 文字サイズ */
+  color: #555; /* 文字色 */
+  white-space: nowrap; /* テキストの折り返しを防ぐ */
+}
+
+.memo-item .memo-actions input[type="color"] {
+  width: 30px; /* 幅 */
+  height: 20px; /* 高さ */
+  padding: 0;
+  margin-left: 5px; /* 左側のマージン */
+  border: 1px solid #ccc; /* 枠線 */
+  border-radius: 4px; /* 角丸 */
+  cursor: pointer; /* カーソルを指の形に */
+}

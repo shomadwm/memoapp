@@ -1,0 +1,20 @@
+/* MemoList.css */
+
+.memo-list {
+  display: grid; /* グリッドレイアウトを使用 */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 応答性の高い列数 */
+  gap: 20px; /* グリッドアイテム間の隙間 */
+  padding: 20px; /* 内側の余白 */
+  margin-top: 20px; /* 上部のマージン */
+  background-color: #f0f2f5; /* リスト全体の背景色 */
+  border-radius: 8px; /* 角丸 */
+}
+
+/* メモがない場合のメッセージ */
+.memo-list p {
+  grid-column: 1 / -1; /* グリッド全体に広げる */
+  text-align: center; /* 中央揃え */
+  color: #666; /* 文字色 */
+  font-style: italic; /* 斜体 */
+  padding: 50px 0; /* 上下の余白 */
+}
