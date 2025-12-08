@@ -18,7 +18,7 @@ function Login() {
     try {
       const res = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       localStorage.setItem('authUser', JSON.stringify(res.data.user));
-      navigate('/memo');
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.error || 'ログインに失敗しました');
     } finally {

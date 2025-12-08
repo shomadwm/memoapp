@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, Memo, User  # User を追加
+from models import db, Memo, User, Follow  # Follow を追加
 from sqlalchemy import inspect, text
 from datetime import datetime
 import pytz
@@ -133,6 +133,109 @@ def login():
 
     # 今回は簡易的にユーザー情報のみ返却（トークン管理を簡略化）
     return jsonify({'message': 'ログイン成功', 'user': user.to_dict()}), 200
+
+
+# --- ユーザー検索エンドポイント ---
+
+@app.route('/users/search', methods=['GET'])
+def search_users():
+    """ユーザー名で前方一致検索"""
+    query = request.args.get('q', '').strip()
+    current_user_id = request.args.get('user_id', type=int)
+    if not query:
+        return jsonify([])
+    users = User.query.filter(User.username.like(f'{query}%')).all()
+    # 自分自身を除外
+    result = [u.to_dict() for u in users if u.id != current_user_id]
+    return jsonify(result)
+
+
+# --- フォロー関連エンドポイント ---
+
+@app.route('/follows', methods=['GET'])
+def get_follows():
+    """自分がフォローしているユーザー一覧を取得"""
+    user_id = request.args.get('user_id', type=int)
+    if not user_id:
+        return jsonify({'error': 'user_id クエリパラメータが必要です'}), 400
+    follows = Follow.query.filter_by(follower_id=user_id).all()
+    # フォロー先ユーザー情報も含めて返す
+    result = []
+    for f in follows:
+        followed_user = User.query.get(f.followed_id)
+        if followed_user:
+            result.append({
+                'follow_id': f.id,
+                'user': followed_user.to_dict(),
+                'created_at': f.created_at.isoformat()
+            })
+    return jsonify(result)
+
+
+@app.route('/follows', methods=['POST'])
+def create_follow():
+    """ユーザーをフォローする"""
+    data = request.get_json() or {}
+    follower_id = data.get('follower_id')
+    followed_id = data.get('followed_id')
+    if not follower_id or not followed_id:
+        return jsonify({'error': 'follower_id と followed_id は必須です'}), 400
+    if follower_id == followed_id:
+        return jsonify({'error': '自分自身をフォローできません'}), 400
+    # 既にフォロー済みかチェック
+    existing = Follow.query.filter_by(follower_id=follower_id, followed_id=followed_id).first()
+    if existing:
+        return jsonify({'error': '既にフォローしています'}), 409
+    # フォロー先ユーザーの存在確認
+    followed_user = User.query.get(followed_id)
+    if not followed_user:
+        return jsonify({'error': '指定されたユーザーが存在しません'}), 404
+    follow = Follow(follower_id=follower_id, followed_id=followed_id)
+    db.session.add(follow)
+    db.session.commit()
+    return jsonify({
+        'follow_id': follow.id,
+        'user': followed_user.to_dict(),
+        'created_at': follow.created_at.isoformat()
+    }), 201
+
+
+@app.route('/follows/<int:follow_id>', methods=['DELETE'])
+def delete_follow(follow_id):
+    """フォローを解除する"""
+    user_id = request.args.get('user_id', type=int)
+    follow = Follow.query.get_or_404(follow_id)
+    if not user_id or follow.follower_id != user_id:
+        return jsonify({'error': '権限がありません'}), 403
+    db.session.delete(follow)
+    db.session.commit()
+    return '', 204
+
+
+# --- フォローユーザーのメモ取得エンドポイント ---
+
+@app.route('/memos/following', methods=['GET'])
+def get_following_memos():
+    """フォローしているユーザーのメモ一覧を取得"""
+    user_id = request.args.get('user_id', type=int)
+    if not user_id:
+        return jsonify({'error': 'user_id クエリパラメータが必要です'}), 400
+    # フォロー中のユーザーIDリストを取得
+    follows = Follow.query.filter_by(follower_id=user_id).all()
+    followed_ids = [f.followed_id for f in follows]
+    if not followed_ids:
+        return jsonify([])
+    # フォロー中ユーザーのメモを取得
+    memos = Memo.query.filter(Memo.user_id.in_(followed_ids)).order_by(Memo.created_at.desc()).all()
+    # メモにユーザー名も追加して返す
+    result = []
+    for memo in memos:
+        memo_dict = memo.to_dict()
+        user = User.query.get(memo.user_id)
+        memo_dict['username'] = user.username if user else 'Unknown'
+        result.append(memo_dict)
+    return jsonify(result)
+
 
 # アプリケーションの実行
 if __name__ == '__main__':

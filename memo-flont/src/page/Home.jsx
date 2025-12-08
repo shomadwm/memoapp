@@ -18,12 +18,20 @@ function Home() {
       {user && (
         <div style={{ marginBottom: '1rem' }}>
           <p>ようこそ {user.username} さん</p>
-          <button onClick={() => navigate('/memo')} style={{ marginRight: '1rem' }}>メモページへ</button>
-          <button onClick={() => { localStorage.removeItem('authUser'); window.location.reload(); }}>ログアウト</button>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+            <button onClick={() => navigate('/mymemo')}>自分のメモ</button>
+            <button onClick={() => navigate('/followmemo')}>フォローのメモ</button>
+            <button onClick={() => navigate('/follow')}>フォロー管理</button>
+            <button onClick={() => { localStorage.removeItem('authUser'); window.location.reload(); }}>ログアウト</button>
+          </div>
         </div>
       )}
       <p>メモアプリへようこそ。ログインしてメモを管理しましょう。</p>
-      <p><Link to="/memo">メモ一覧を見る (ログイン後推奨)</Link></p>
+      <nav style={{ marginTop: '1rem' }}>
+        <p><Link to="/mymemo">自分のメモを見る</Link></p>
+        <p><Link to="/followmemo">フォローユーザーのメモを見る</Link></p>
+        <p><Link to="/follow">フォロー管理</Link></p>
+      </nav>
     </div>
   );
 }
