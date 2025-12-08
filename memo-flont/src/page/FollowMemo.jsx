@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './FollowMemo.css';
-
-const API_BASE_URL = 'http://127.0.0.1:5000';
+import { API_BASE_URL } from '../config';
 
 function FollowMemo() {
   const navigate = useNavigate();

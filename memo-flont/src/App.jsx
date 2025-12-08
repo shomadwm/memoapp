@@ -5,8 +5,7 @@ import MemoList from './components/MemoList';
 import MemoForm from './components/MemoForm';
 import Modal from './components/Modal'; // モーダルコンポーネントをインポート
 import './App.css';
-
-const API_BASE_URL = 'http://127.0.0.1:5000';
+import { API_BASE_URL } from './config';
 
 function App() {
   const [memos, setMemos] = useState([]);
